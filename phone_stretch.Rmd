@@ -1,0 +1,149 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# WEB SCRAPPING MULTIPLE PAGES
+
+Taking it off from we stopped at the last project, where a single page was scrapped. To get a quick recap, you can follow the link provided, to have a quick glance of it.
+
+In this project, multiple pages of the eCommerce website (Junmia) that we hae been using nwil be scrapped, and we will focus on the "Phone and  Tablets" section. Let's begin: 
+
+
+## LOADING THE LIBRARIES
+1. rvest: the library for scrapping the data
+2. dplyr: library for data manipulation.
+```{r}
+library(rvest)
+library(dplyr)
+
+```
+
+
+
+## CREATING AN EMPTY DATARAME.
+An empty data-frame with a variable name, "phone" will be created for storing the data that will be scraped from the site.
+```{r}
+phones= data.frame()
+```
+
+
+## MAKING CLEAR OF WHAT TO SCRAPE
+What we want from each page is; Product's name, Price, Discount, and Discount Price.
+using a referencing a single page scrapped from the last project (you can follow this "" to check it out). 
+The Tag name for each distinct class needed is the sam in all pages, so we only need to iterate over them, to get the desired results
+
+
+## SCRAPPING THE DATA
+
+```{r}
+
+
+for(page_result in seq(from= 1, to= 50, by= 1)) {
+  link= paste0("https://www.jumia.com.ng/mlp-stay-connected-deals/smartphones/?page=", 
+              page_result,"#catalog-listing")
+  
+  page = read_html(link)
+  name= html_nodes(page, ".name") %>%  html_text2()
+  original_price= html_nodes(page, ".old") %>%  html_text2()
+  discount= html_nodes(page, "._sm") %>%  html_text2()
+  discount_price= html_nodes(page, ".prc") %>% html_text2()
+  ratings= html_nodes(page, ".rev") %>%  html_text2()
+  
+  max_length = max(c(length(names), length(original_price), length(discount), length(discount_price), length(ratings)))
+  
+  phones= rbind(phones, data.frame(
+    name= c(name, rep(NA, max_length - length(name))),
+    original_price= c(original_price, rep(NA, max_length - length(original_price))),
+    discount= c(discount, rep(NA, max_length - length(discount))),
+    discount_price= c(discount_price, rep(NA, max_length - length(discount_price))),
+    ratings= c(ratings, rep(NA, max_length - length(ratings)))
+  )) 
+  
+  print(paste("Page:", page_result))
+  
+}
+
+
+
+```
+
+The secrets to scrapping multiple pages are, finding a pattern in the pages and iterating over them by using a "for-loop".
+Before iterating over the web pages, you must make sure to look at the links and find the patterns of increment for the web pages, as this will determine the values you will pass inside the "seq()" function. Using our case study's first 4 pages below:
+
+link_to_page_1=  https://www.jumia.com.ng/phones-tablets/
+link_to_page_2 = https://www.jumia.com.ng/phones-tablets/?page=2#catalog-listing
+link_to_page_3 = https://www.jumia.com.ng/phones-tablets/?page=3#catalog-listing
+link_to_page_4 = https://www.jumia.com.ng/phones-tablets/?page=4#catalog-listing
+
+
+From the links above, can you derive a pattern????
+Yes, "page=2", "page=3", "page=4". and so on. So, we can deduce from there that, the page increment by 1, and you can then add the detected pattern to the first page link, so that it'll become, "https://www.jumia.com.ng/phones-tablets/?page=1#catalog-listing" in your Browser, then reload it. so it'd be saved. 
+From here, we can scrape the data we want one after the other in different pages, but with a "for-loop", it will be faster and easier.
+
+Moving on, from the pattern detected from above, we can set the values for "seq()" function to, create a sequence(from 1, to 50, and increase by 1).
+
+That explains the reason we have to use a "for" loop and the seq() function will iterate over all the pages till it gets to the last one, page 50.
+
+```
+for(page_result in seq(from= 1, to= 50, by= 1)) {
+  link= paste0("https://www.jumia.com.ng/mlp-stay-connected-deals/smartphones/?page=", 
+              page_result,"#catalog-listing")
+```
+
+
+The block of code below scrapes the name, original_price, discount, discount_price and ratings using their tag names.
+To get a better description of the code, you can check it out from this project's link, https://github.com/David-Olateju/eCommerce-site-Scrapping-in-R.git
+```
+  page = read_html(link)
+  name= html_nodes(page, ".name") %>%  html_text2()
+  original_price= html_nodes(page, ".old") %>%  html_text2()
+  discount= html_nodes(page, "._sm") %>%  html_text2()
+  discount_ price= html_nodes(page, ".prc") %>% html_text2()
+  ratings= html_nodes(page, ".rev") %>%  html_text2()
+```
+
+
+This one here helps to take in the number of observations for each variable, and the one with the largest number of observations (maximum length) will be assigned to the variable. max_length.
+The importance of this line is because while going through pages, some products had no discount, hence the discount prices for such products were missing, and these irregularities in length needs to be well taken care of in R, when we want to create a data-frame out of the variables.
+```
+  max_length = max(c(length(names), length(original_price), length(discount), length(discount_price), length(ratings)))
+```
+
+After everything, the empty data-frame created above will be bind together with the new observations here, so we can have a complete dataframe consisting of all 50 pages of observations.
+
+
+```
+ phones= rbind(phones, data.frame(
+    name= c(name, rep(NA, max_length - length(name))),
+    original_price= c(original_price, rep(NA, max_length - length(original_price))),
+    discount= c(discount, rep(NA, max_length - length(discount))),
+    discount_price= c(discount_price, rep(NA, max_length - length(discount_price))),
+    ratings= c(ratings, rep(NA, max_length - length(ratings)))
+  ))
+ 
+```
+
+
+The importance of having the code below is that, from the max_length gotten above, it's been explained that, there will be irregularities with the number of observations from each feature, so each feature will be filled with the data gotten from the website, using its tag, and you have to explicitly define what you want to fill in the blank spaces (which was "NA" in our case here). The structure of these lines of code is:
+```
+feature= c(feature, rep(NA, max_length - length(feature)))
+
+```
+
+The feature was first filled with the observations, then the length of the feature will be subtracted from the maximum length (max_length gotten from above), the result of this subtraction will then be filled with "NA", as specified.
+
+To take a look at the first 5 rows of the data,
+```{r}
+
+head(phones)
+
+```
+
+With that, all 50 pages will be scrapped and you'll convert it to a csv file using the code below:
+```{r}
+write.csv(phones, "Jumia_Phones_and_Tablets")
+
+```
+
+Thank you for reading through.
