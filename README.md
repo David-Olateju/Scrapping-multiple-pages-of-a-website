@@ -1,8 +1,10 @@
 # WEB SCRAPPING MULTIPLE PAGES
 
-Taking it off from where we stopped at the last project, where a single page was scrapped. To get a quick recap, you can follow the link provided, to have a quick glance of it.
+Taking it off from where we stopped at the last project, where a single page was scrapped. To get a quick recap, you can follow the link provided, https://github.com/David-Olateju/eCommerce-site-Scrapping-in-R.git,
+to have a quick glance of it.
 
-In this project, multiple pages of the eCommerce website (Jumia) that we have been using will be scrapped, and we will focus on the "Phone and Tablets" section. Let's begin: 
+In this project, multiple pages of the eCommerce website (Jumia's) that we have been using will be scrapped, and we will focus on the "Phone and Tablets" section. 
+Let's begin: 
 
 ## LOADING THE LIBRARIES
  1. rvest: the library for scrapping the data
@@ -13,13 +15,13 @@ library(dplyr)
 ```
 
 ## CREATING AN EMPTY DATARAME.
-An empty data-frame with a variable name, "phones" will be created for storing the data that will be scraped from the site.
+An empty dataframe with the variable name, "phones" will be created for storing the data that will be scraped from the site.
 ```{r}
 phones= data.frame()
 ```
 
 ## MAKING CLEAR OF WHAT TO SCRAPE
-What we want from each page are; Product's name, Price, Discount, Discount Price and ratings.
+What we want from each page are; product's name, original pice, discount, discount price, and ratings.
 Referencing a single page scrapped from the last project (you can follow this link to check it out; https://github.com/David-Olateju/eCommerce-site-Scrapping-in-R.git) 
 The Tag name for each distinct class needed is the same in all pages, so we only need to iterate over them, to get the desired results.
 
