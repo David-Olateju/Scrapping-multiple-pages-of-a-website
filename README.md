@@ -145,3 +145,6 @@ write.csv(phones, "Jumia_Phones_and_Tablets.csv")
 
 # THE END.
 Thanks for reading through.
+
+
+Do you wish to sharpen/shopw off your Data Cleaning skills, you can have a go at the dataset here, https://github.com/David-Olateju/Scrapping-multiple-pages-of-a-website/blob/10149fa3c1f1f4b9c3775cbbe0f8bffc88d80d55/Jumia_Phones_and_Tablets.csv
