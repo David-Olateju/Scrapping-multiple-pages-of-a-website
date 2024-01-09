@@ -137,7 +137,7 @@ There were 4000 rows of data, after scrapping and 5 columns.
 ## CONVERTING AND WRITING IT AS A CSV FILE
 With that, all 50 pages will be scrapped and you'll convert it to a csv file using the code below:
 ```{r}
-write.csv(phones, "Jumia_Phones_and_Tablets")
+write.csv(phones, "Jumia_Phones_and_Tablets.csv")
 
 ```
 
