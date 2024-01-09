@@ -93,7 +93,7 @@ To get a better description of the code, you can check it out from this project'
 ```
 
 
-##### SORTING OUT THE IRREGULARITIS DUE TO DIFFERENCES IN NUMBER OF ROWS
+##### SORTING OUT THE IRREGULARITIS DUE TO DIFFERENCES IN NUMBERS OF ROWS
 When I tried to create a data frame using the technique I used in the last project, i got an error, which is shown below;
 ![N](https://github.com/David-Olateju/Scrapping-multiple-pages-of-a-website/assets/129637983/aad41b6f-0d99-474e-ba40-169206299883)
 
